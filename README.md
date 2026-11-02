@@ -1,37 +1,40 @@
-# Three.js Feature Showcase
+# Путеводитель по Three.js
 
-A small, dependency-free web app that demonstrates core [three.js](https://threejs.org) features
-through six interactive demos. Every demo has a live control panel (lil-gui), orbit controls and an FPS meter.
+Русскоязычный интерактивный гид по библиотеке [three.js](https://threejs.org): что это такое,
+зачем она нужна, её преимущества, где её применяют, базовые понятия, сравнение с альтернативами
+и как начать. В страницу встроены живые 3D-сцены:
 
-| Demo | What it shows |
-| --- | --- |
-| **Geometries & Materials** | Built-in geometries; Basic, Lambert, Phong, Toon, Normal, Standard (PBR) and Physical (iridescence, clearcoat) materials; PMREM environment lighting; canvas textures; sprites |
-| **Lights & Shadows** | Ambient, hemisphere, directional, point and spot lights; soft shadow maps; light helpers; exponential fog |
-| **Particles** | Procedural galaxy of up to 200k points from a raw `BufferGeometry` with per-vertex colours and additive blending |
-| **Raycasting** | 400-cube `InstancedMesh` (one draw call) with pointer hover highlight and click-to-ripple via `Raycaster` |
-| **Custom Shaders** | `ShaderMaterial` with GLSL vertex displacement and a height-coloured, anti-aliased grid; live uniforms |
-| **GLTF & Animation** | Skinned glTF model loaded with `GLTFLoader`, clips played and cross-faded with `AnimationMixer` (falls back to a keyframe-track animation when offline) |
+- **Герой-сцена**: многогранник над сеткой с осями XYZ, цвета берутся из темы страницы.
+- **Первая сцена**: код вращающегося куба и результат его работы рядом.
+- **Лаборатория** с шестью примерами и панелью настроек: материалы, свет и тени, частицы,
+  выбор объектов мышью (Raycaster + InstancedMesh), свои шейдеры, glTF-модель с анимацией.
 
-## Run it
+Онлайн: https://dipoddp.github.io/Test/ (GitHub Pages).
 
-No build step — three.js and lil-gui are loaded as ES modules from a CDN via an import map.
-Serve the folder with any static server (ES modules don't work from `file://`):
+## Запуск локально
+
+Сборка не нужна: three.js и lil-gui подключаются с CDN через import map. Нужен любой статический сервер:
 
 ```bash
-npx serve .            # or: python3 -m http.server 8000
+npx serve .            # или: python3 -m http.server 8000
 ```
 
-Then open the printed URL. Link straight to a demo with a hash, e.g. `/#shaders`.
+Ссылки вида `#lab-shaders` сразу открывают нужный пример в лаборатории
+(`materials`, `lights`, `particles`, `interaction`, `shaders`, `models`).
 
-## Project layout
+## Структура
 
 ```
-index.html            import map + HUD markup
-src/main.js           renderer, camera, controls, demo switching, render loop
-src/style.css
-src/scenes/*.js       one module per demo: { id, title, description, camera, setup() }
+index.html             текст путеводителя и import map
+src/guide.css          стили (светлая и тёмная темы)
+src/main.js            точка входа: подсветка кода, сцены, лаборатория, навигация по #lab-*
+src/viewer.js          встроенный просмотрщик примеров (вкладки, OrbitControls, lil-gui)
+src/hero.js            сцена в шапке
+src/first-scene.js     живой пример «куб за 20 строк»
+src/highlight.js       маленькая подсветка синтаксиса
+src/scenes/*.js        примеры лаборатории: { id, title, description, camera, setup() }
 ```
 
-To add a demo, create a module in `src/scenes/` that exports `{ id, title, description, setup }`
-where `setup({ THREE, renderer, camera, controls, gui })` returns `{ scene, update(dt, t), dispose() }`,
-then add it to the `DEMOS` array in `src/main.js`.
+Чтобы добавить пример, создайте модуль в `src/scenes/`, который экспортирует
+`{ id, title, description, setup }`, где `setup({ THREE, renderer, camera, controls, gui })`
+возвращает `{ scene, update(dt, t), dispose() }`, и добавьте его в список в `src/main.js`.

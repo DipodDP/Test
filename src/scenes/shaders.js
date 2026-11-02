@@ -35,11 +35,9 @@ const fragmentShader = /* glsl */ `
 
 export default {
   id: 'shaders',
-  title: 'Custom Shaders',
+  title: 'Шейдеры',
   description:
-    'A ShaderMaterial with hand-written GLSL: the vertex shader displaces a 256×256 plane into animated ' +
-    'waves on the GPU and the fragment shader colours it by height with an anti-aliased grid. ' +
-    'All uniforms are live-editable.',
+    'ShaderMaterial с собственным кодом на GLSL. Вершинный шейдер изгибает плоскость из 65 тысяч вершин в волны прямо на видеокарте, фрагментный красит её по высоте и рисует сетку. Все uniforms меняются в панели.',
   camera: [0, 6, 10],
 
   setup({ THREE, gui }) {

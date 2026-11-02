@@ -1,10 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Three.js Feature Showcase</title>
-    <link rel="stylesheet" href="src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <title>Путеводитель по Three.js</title>
+    <meta name="description" content="Что такое Three.js, зачем он нужен, его преимущества и возможности — с живыми интерактивными примерами." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="src/guide.css" />
     <script type="importmap">
       {
         "imports": {
@@ -16,13 +21,445 @@
     </script>
   </head>
   <body>
-    <div id="app"></div>
-    <header id="hud">
-      <h1>Three.js Showcase</h1>
-      <nav id="tabs"></nav>
-      <p id="description"></p>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#top" aria-label="В начало">
+          <span class="axes" aria-hidden="true"><i class="ax-x"></i><i class="ax-y"></i><i class="ax-z"></i></span>
+          Three.js<span class="brand-sub">по-русски</span>
+        </a>
+        <nav class="toc" aria-label="Разделы">
+          <a href="#what">Что это</a>
+          <a href="#why">Зачем</a>
+          <a href="#uses">Где применяют</a>
+          <a href="#concepts">Основы</a>
+          <a href="#features">Возможности</a>
+          <a href="#lab">Лаборатория</a>
+          <a href="#compare">Сравнение</a>
+          <a href="#start">Как начать</a>
+        </nav>
+      </div>
     </header>
-    <footer id="info">Drag to orbit · Scroll to zoom · Right-drag to pan</footer>
+
+    <main id="top">
+      <!-- HERO ---------------------------------------------------------- -->
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-text">
+            <p class="eyebrow"><code>import * as THREE from 'three'</code></p>
+            <h1>3D-графика в&nbsp;браузере без плагинов и&nbsp;боли</h1>
+            <p class="lead">
+              Three.js — самая популярная JavaScript-библиотека для 3D в вебе. Она берёт на себя
+              низкоуровневую работу с видеокартой и даёт понятные объекты: сцену, камеру, свет,
+              модели и материалы. Этот путеводитель объясняет, что она умеет, зачем её используют
+              и как начать — с живыми примерами прямо на странице.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#what">Читать путеводитель</a>
+              <a class="btn" href="#lab">Сразу к примерам</a>
+            </div>
+            <dl class="facts">
+              <div><dt>С&nbsp;года</dt><dd>2010</dd></div>
+              <div><dt>Лицензия</dt><dd>MIT</dd></div>
+              <div><dt>Звёзд на&nbsp;GitHub</dt><dd>100k+</dd></div>
+              <div><dt>Версия здесь</dt><dd>r170</dd></div>
+            </dl>
+          </div>
+          <figure class="hero-stage">
+            <div id="hero-canvas" class="hero-canvas" aria-label="Вращающийся многогранник — сцена Three.js"></div>
+            <figcaption>Эта сцена — тоже Three.js: меш, свет, сетка и оси <span class="x">X</span>&nbsp;<span class="y">Y</span>&nbsp;<span class="z">Z</span>. Наведите курсор.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- WHAT ----------------------------------------------------------- -->
+      <section id="what" class="section">
+        <div class="prose">
+          <p class="eyebrow">Что это</p>
+          <h2>Three.js — слой между вами и WebGL</h2>
+          <p>
+            Браузеры умеют рисовать 3D через <strong>WebGL</strong> (а теперь и через более новый
+            <strong>WebGPU</strong>). Но это очень низкоуровневые интерфейсы: чтобы вывести на экран
+            хотя бы один цветной треугольник на чистом WebGL, нужно написать шейдеры на языке GLSL,
+            скомпилировать их, создать буферы, разметить атрибуты и вручную посчитать матрицы
+            проекции. Это десятки строк ради одного треугольника.
+          </p>
+          <p>
+            <strong>Three.js</strong> прячет всё это за привычными понятиями из 3D-редакторов. Вы
+            создаёте сцену, ставите камеру, добавляете куб, включаете свет — и библиотека сама
+            превращает это в команды для видеокарты. Её создал Рикардо Кабельо (mrdoob) в 2010 году,
+            сейчас она развивается сообществом с открытым исходным кодом и выходит примерно раз
+            в месяц (номера версий вида <code>r170</code>).
+          </p>
+          <div class="compare-pair">
+            <div class="pair-col">
+              <h3>Чистый WebGL</h3>
+              <ul class="ticks ticks-x">
+                <li>Писать вершинный и фрагментный шейдеры вручную</li>
+                <li>Компилировать и связывать программы, ловить ошибки</li>
+                <li>Создавать буферы и описывать атрибуты вершин</li>
+                <li>Считать матрицы камеры и перспективы самому</li>
+                <li>Свет, тени, текстуры — всё с нуля</li>
+              </ul>
+            </div>
+            <div class="pair-col">
+              <h3>Three.js</h3>
+              <ul class="ticks ticks-y">
+                <li><code>new THREE.Mesh(geometry, material)</code></li>
+                <li>Готовые материалы, включая физически корректные (PBR)</li>
+                <li>Камеры, свет и тени включаются одной строкой</li>
+                <li>Загрузчики моделей, текстур и анимаций</li>
+                <li>При желании — доступ к своим шейдерам</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY ------------------------------------------------------------ -->
+      <section id="why" class="section">
+        <div class="prose">
+          <p class="eyebrow">Зачем</p>
+          <h2>Преимущества</h2>
+          <p>Почему из всех 3D-инструментов для веба чаще всего выбирают именно Three.js.</p>
+        </div>
+        <div class="wide grid-3">
+          <article class="point">
+            <h3>Низкий порог входа</h3>
+            <p>Понятный объектный API. Первую вращающуюся фигуру можно сделать за 20 строк — ниже на странице есть такой пример.</p>
+          </article>
+          <article class="point">
+            <h3>Огромное сообщество</h3>
+            <p>Больше 100 тысяч звёзд на GitHub, сотни официальных примеров, активный форум. Почти на любой вопрос уже есть ответ.</p>
+          </article>
+          <article class="point">
+            <h3>Бесплатно и открыто</h3>
+            <p>Лицензия MIT: можно использовать в коммерческих проектах, менять код и не платить роялти.</p>
+          </article>
+          <article class="point">
+            <h3>Работает везде</h3>
+            <p>Любой современный браузер на компьютере, телефоне или в VR-шлеме. Пользователю ничего не нужно устанавливать.</p>
+          </article>
+          <article class="point">
+            <h3>Гибкость</h3>
+            <p>Это библиотека, а не движок: она не навязывает структуру проекта. Её легко встроить в сайт на React, Vue или без фреймворка.</p>
+          </article>
+          <article class="point">
+            <h3>Есть куда расти</h3>
+            <p>От готовых материалов до своих шейдеров, постобработки, WebXR и нового рендерера на WebGPU.</p>
+          </article>
+          <article class="point">
+            <h3>Стандартные форматы</h3>
+            <p>Отлично поддерживает glTF — «JPEG для 3D». Модели из Blender, Maya или Cinema 4D загружаются за пару строк.</p>
+          </article>
+          <article class="point">
+            <h3>Богатая экосистема</h3>
+            <p>React Three Fiber и drei для React, физика через Rapier или cannon-es, анимации через GSAP или Theatre.js.</p>
+          </article>
+          <article class="point">
+            <h3>Без зависимостей</h3>
+            <p>Один пакет <code>three</code>. Подключается через npm или прямо с CDN, как на этой странице — без сборщика.</p>
+          </article>
+        </div>
+        <div class="prose">
+          <aside class="note">
+            <h3>Чего Three.js не делает</h3>
+            <p>
+              Это не игровой движок. В нём нет визуального редактора сцен, физики, сетевого кода
+              и системы сущностей — их добавляют сторонними библиотеками. API иногда меняется между
+              версиями, поэтому при обновлении стоит читать заметки к релизу. За производительностью
+              больших сцен тоже следите сами (советы — в разделе «Как начать»).
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <!-- USES ----------------------------------------------------------- -->
+      <section id="uses" class="section">
+        <div class="prose">
+          <p class="eyebrow">Где применяют</p>
+          <h2>Для чего используют Three.js</h2>
+        </div>
+        <div class="wide uses">
+          <div class="use"><h3>Конфигураторы товаров</h3><p>Покупатель крутит кроссовок, диван или автомобиль, меняет цвет и материал и сразу видит результат.</p></div>
+          <div class="use"><h3>Визуализация данных</h3><p>3D-графики, сети связей, глобусы с потоками данных. Например, интерактивный глобус на главной странице GitHub сделан на Three.js.</p></div>
+          <div class="use"><h3>Промо-сайты и портфолио</h3><p>Запоминающиеся лендинги с 3D-сценами, реагирующими на прокрутку и курсор. Частые гости в подборках вроде Awwwards.</p></div>
+          <div class="use"><h3>Браузерные игры</h3><p>От казуальных головоломок до 3D-шутеров. Вместе с физическим движком получается полноценная игра без установки.</p></div>
+          <div class="use"><h3>Архитектура и недвижимость</h3><p>Виртуальные туры по квартирам, планировки, визуализация зданий до начала стройки.</p></div>
+          <div class="use"><h3>Наука и образование</h3><p>Модели молекул, Солнечная система, анатомия, инженерные схемы, которые можно повернуть и рассмотреть.</p></div>
+          <div class="use"><h3>VR и AR</h3><p>Через WebXR те же сцены открываются в шлеме виртуальной реальности или поверх камеры телефона.</p></div>
+          <div class="use"><h3>Карты и цифровые двойники</h3><p>3D-рельеф, городские модели, мониторинг оборудования и производств в реальном времени.</p></div>
+        </div>
+      </section>
+
+      <!-- CONCEPTS ------------------------------------------------------- -->
+      <section id="concepts" class="section">
+        <div class="prose">
+          <p class="eyebrow">Основы</p>
+          <h2>Из чего состоит любая сцена</h2>
+          <p>
+            У любого приложения на Three.js одна и та же схема. Есть <strong>сцена</strong>
+            с объектами и светом, есть <strong>камера</strong>, которая на неё смотрит, и есть
+            <strong>рендерер</strong>, который много раз в секунду рисует то, что видит камера,
+            в элемент <code>&lt;canvas&gt;</code> на странице.
+          </p>
+        </div>
+        <div class="wide">
+          <div class="pipeline" role="img" aria-label="Схема: сцена с мешами и светом плюс камера передаются рендереру, который рисует в canvas">
+            <div class="node node-scene">
+              <span class="api">THREE.Scene</span>
+              <div class="node-children">
+                <div class="node node-mesh">
+                  <span class="api">Mesh</span>
+                  <div class="mesh-parts"><span>Geometry<small>форма</small></span><b>+</b><span>Material<small>поверхность</small></span></div>
+                </div>
+                <div class="node"><span class="api">Light</span><small>свет</small></div>
+              </div>
+            </div>
+            <div class="plus">+</div>
+            <div class="node"><span class="api">Camera</span><small>точка обзора</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node node-accent"><span class="api">WebGLRenderer</span><small>рисует кадр</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><span class="api">&lt;canvas&gt;</span><small>на странице</small></div>
+          </div>
+        </div>
+        <div class="prose">
+          <dl class="glossary">
+            <div><dt><code>Scene</code></dt><dd>Контейнер для всего, что нужно нарисовать. Объекты образуют дерево: если подвинуть родителя, вместе с ним сдвинутся и дети.</dd></div>
+            <div><dt><code>Camera</code></dt><dd>Чаще всего <code>PerspectiveCamera</code> — как человеческий глаз: дальние объекты меньше. Для чертежей и изометрии есть <code>OrthographicCamera</code>.</dd></div>
+            <div><dt><code>Geometry</code></dt><dd>Форма объекта — набор вершин и треугольников. Есть готовые: куб, сфера, тор, цилиндр, текст. Можно задать свою через <code>BufferGeometry</code>.</dd></div>
+            <div><dt><code>Material</code></dt><dd>Как выглядит поверхность: цвет, блеск, металличность, прозрачность, текстуры. <code>MeshStandardMaterial</code> — хороший выбор по умолчанию.</dd></div>
+            <div><dt><code>Mesh</code></dt><dd>Видимый объект: геометрия плюс материал. Его можно двигать (<code>position</code>), вращать (<code>rotation</code>) и масштабировать (<code>scale</code>).</dd></div>
+            <div><dt><code>Light</code></dt><dd>Без света большинство материалов чёрные. Обычно берут мягкий общий свет и один направленный, который даёт тени.</dd></div>
+            <div><dt><code>Renderer</code></dt><dd>Превращает сцену в картинку. Метод <code>setAnimationLoop</code> вызывает вашу функцию перед каждым кадром — там и происходит анимация.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- FIRST SCENE ---------------------------------------------------- -->
+      <section id="first" class="section">
+        <div class="prose">
+          <p class="eyebrow">Первая сцена</p>
+          <h2>Вращающийся куб за 20 строк</h2>
+          <p>Слева — весь код, справа — результат его работы. Именно этот код сейчас и выполняется.</p>
+        </div>
+        <div class="wide split">
+          <div class="code-wrap"><pre class="code" data-highlight><code>import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
+camera.position.z = 3;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(width, height);
+document.body.appendChild(renderer.domElement);
+
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshStandardMaterial({ color: 0x2f6fd6 })
+);
+scene.add(cube);
+
+const light = new THREE.DirectionalLight(0xffffff, 3);
+light.position.set(2, 3, 4);
+scene.add(light, new THREE.AmbientLight(0xffffff, 0.4));
+
+renderer.setAnimationLoop((time) =&gt; {
+  cube.rotation.x = time / 2000;
+  cube.rotation.y = time / 1000;
+  renderer.render(scene, camera);
+});</code></pre></div>
+          <div id="first-canvas" class="first-canvas" aria-label="Результат кода: вращающийся синий куб"></div>
+        </div>
+      </section>
+
+      <!-- FEATURES ------------------------------------------------------- -->
+      <section id="features" class="section">
+        <div class="prose">
+          <p class="eyebrow">Возможности</p>
+          <h2>Что умеет Three.js</h2>
+          <p>У шести ключевых возможностей есть живой пример в лаборатории ниже. Ссылка под карточкой откроет нужный.</p>
+        </div>
+        <div class="wide grid-3">
+          <article class="feature">
+            <p class="api">MeshStandardMaterial · MeshPhysicalMaterial</p>
+            <h3>Материалы и PBR</h3>
+            <p>От простой заливки до физически корректных материалов: металл, лак, стекло, ткань, переливы. Освещение от карты окружения делает объекты реалистичными.</p>
+            <a class="go" href="#lab-materials">Открыть пример →</a>
+          </article>
+          <article class="feature">
+            <p class="api">DirectionalLight · SpotLight · shadowMap</p>
+            <h3>Свет и тени</h3>
+            <p>Пять типов источников света, мягкие тени в реальном времени и туман. Свет можно двигать, менять цвет и яркость на лету.</p>
+            <a class="go" href="#lab-lights">Открыть пример →</a>
+          </article>
+          <article class="feature">
+            <p class="api">Points · BufferGeometry</p>
+            <h3>Частицы</h3>
+            <p>Сотни тысяч точек одним вызовом отрисовки: звёзды, снег, дым, искры, облака точек от 3D-сканеров.</p>
+            <a class="go" href="#lab-particles">Открыть пример →</a>
+          </article>
+          <article class="feature">
+            <p class="api">Raycaster · InstancedMesh</p>
+            <h3>Интерактивность</h3>
+            <p>Raycaster узнаёт, на какой объект указывает мышь или палец. InstancedMesh рисует тысячи одинаковых объектов почти без потерь в скорости.</p>
+            <a class="go" href="#lab-interaction">Открыть пример →</a>
+          </article>
+          <article class="feature">
+            <p class="api">ShaderMaterial · GLSL · TSL</p>
+            <h3>Свои шейдеры</h3>
+            <p>Когда готовых материалов мало, можно написать программу для видеокарты: волны, эффекты, процедурные текстуры.</p>
+            <a class="go" href="#lab-shaders">Открыть пример →</a>
+          </article>
+          <article class="feature">
+            <p class="api">GLTFLoader · AnimationMixer</p>
+            <h3>Модели и анимация</h3>
+            <p>Загрузка моделей из Blender и других редакторов вместе со скелетной анимацией и плавными переходами между движениями.</p>
+            <a class="go" href="#lab-models">Открыть пример →</a>
+          </article>
+        </div>
+        <div class="prose">
+          <h3 class="sub">А ещё</h3>
+          <ul class="more">
+            <li><strong>Постобработка</strong> — свечение (bloom), глубина резкости, сглаживание, цветокоррекция через <code>EffectComposer</code>.</li>
+            <li><strong>WebXR</strong> — режимы виртуальной и дополненной реальности встроены в рендерер (<code>renderer.xr</code>).</li>
+            <li><strong>WebGPU</strong> — новый <code>WebGPURenderer</code> и язык шейдеров TSL; если WebGPU недоступен, он откатывается на WebGL 2.</li>
+            <li><strong>Загрузчики</strong> — glTF, FBX, OBJ, STL, PLY, сжатие геометрии Draco, сжатые текстуры KTX2, HDR-окружения.</li>
+            <li><strong>Управление камерой</strong> — OrbitControls, FlyControls, PointerLockControls для игр от первого лица.</li>
+            <li><strong>Звук</strong> — пространственный звук, привязанный к объектам (<code>PositionalAudio</code>).</li>
+            <li><strong>Текст и 2D</strong> — 3D-текст, спрайты, HTML-подписи поверх сцены (<code>CSS2DRenderer</code>).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- LAB ------------------------------------------------------------ -->
+      <section id="lab" class="section">
+        <div class="prose">
+          <p class="eyebrow">Лаборатория</p>
+          <h2>Попробуйте сами</h2>
+          <p>
+            Шесть живых сцен. Вращайте камеру мышью или пальцем; чтобы включить масштаб колёсиком,
+            сначала кликните по сцене. Справа — панель настроек: названия параметров совпадают
+            со свойствами в API Three.js, так что их легко найти в документации.
+          </p>
+        </div>
+        <div class="wide">
+          <div class="lab">
+            <div class="lab-tabs" id="lab-tabs" role="tablist" aria-label="Примеры"></div>
+            <div class="lab-stage" id="lab-stage">
+              <div class="lab-gui" id="lab-gui"></div>
+              <p class="lab-hint" id="lab-hint">Кликните по сцене, чтобы включить масштаб колёсиком</p>
+            </div>
+            <p class="lab-desc" id="lab-desc"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARE -------------------------------------------------------- -->
+      <section id="compare" class="section">
+        <div class="prose">
+          <p class="eyebrow">Сравнение</p>
+          <h2>Three.js и альтернативы</h2>
+          <p>Короткая шпаргалка, чтобы выбрать инструмент под задачу.</p>
+        </div>
+        <div class="wide table-wrap">
+          <table class="cmp">
+            <thead>
+              <tr><th>Инструмент</th><th>Что это</th><th>Сильные стороны</th><th>Когда выбрать</th></tr>
+            </thead>
+            <tbody>
+              <tr class="hl"><td><strong>Three.js</strong></td><td>Библиотека рендеринга</td><td>Простота, гибкость, крупнейшее сообщество и количество примеров</td><td>Сайты, визуализации, конфигураторы, эксперименты, лёгкие игры</td></tr>
+              <tr><td><strong>React Three Fiber</strong></td><td>Three.js в виде React-компонентов</td><td>Декларативные сцены, экосистема pmndrs (drei, rapier)</td><td>Проект уже на React</td></tr>
+              <tr><td><strong>Babylon.js</strong></td><td>Полноценный 3D-движок</td><td>Встроенные инспектор, физика, GUI, сильная поддержка TypeScript</td><td>Сложные игры и приложения, где нужно «всё в коробке»</td></tr>
+              <tr><td><strong>PlayCanvas</strong></td><td>Движок плюс онлайн-редактор</td><td>Визуальный редактор и совместная работа в браузере</td><td>Команда с дизайнерами, игры и реклама</td></tr>
+              <tr><td><strong>A-Frame</strong></td><td>HTML-разметка для VR поверх Three.js</td><td>Сцена описывается тегами, минимум JavaScript</td><td>Быстрые VR-прототипы и обучение</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- START ---------------------------------------------------------- -->
+      <section id="start" class="section">
+        <div class="prose">
+          <p class="eyebrow">Как начать</p>
+          <h2>От нуля до своей сцены</h2>
+          <ol class="steps">
+            <li>
+              <h3>Подключите библиотеку</h3>
+              <p>Через npm, если у вас есть сборщик (например, Vite):</p>
+              <div class="code-wrap"><pre class="code" data-highlight><code>npm create vite@latest my-3d-app -- --template vanilla
+cd my-3d-app
+npm install three</code></pre></div>
+              <p>Или без сборщика, через import map, как сделано на этой странице:</p>
+              <div class="code-wrap"><pre class="code" data-highlight><code>&lt;script type="importmap"&gt;
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+&lt;/script&gt;</code></pre></div>
+            </li>
+            <li>
+              <h3>Создайте сцену, камеру и рендерер</h3>
+              <p>Возьмите пример с кубом выше — это готовый каркас любого проекта.</p>
+            </li>
+            <li>
+              <h3>Добавьте управление и подстройку под экран</h3>
+              <div class="code-wrap"><pre class="code" data-highlight><code>import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const controls = new OrbitControls(camera, renderer.domElement);
+
+window.addEventListener('resize', () =&gt; {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});</code></pre></div>
+            </li>
+            <li>
+              <h3>Загрузите настоящую модель</h3>
+              <p>Экспортируйте модель из Blender в формате <code>.glb</code> и загрузите её:</p>
+              <div class="code-wrap"><pre class="code" data-highlight><code>import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+new GLTFLoader().load('model.glb', (gltf) =&gt; scene.add(gltf.scene));</code></pre></div>
+            </li>
+            <li>
+              <h3>Опубликуйте</h3>
+              <p>Результат — обычный статический сайт. Его можно бесплатно разместить на GitHub Pages, Netlify или Vercel. Эта страница тоже лежит на GitHub Pages.</p>
+            </li>
+          </ol>
+
+          <h3 class="sub">Советы по производительности</h3>
+          <ul class="more">
+            <li>Ограничьте плотность пикселей: <code>renderer.setPixelRatio(Math.min(devicePixelRatio, 2))</code>.</li>
+            <li>Много одинаковых объектов рисуйте через <code>InstancedMesh</code>, а не тысячей отдельных мешей.</li>
+            <li>Сжимайте модели (Draco, Meshopt) и текстуры (KTX2), делайте стороны текстур степенями двойки (512, 1024, 2048).</li>
+            <li>Тени дороги: включайте их только у тех объектов и источников, где они заметны.</li>
+            <li>Освобождайте память видеокарты: у ненужных геометрий, материалов и текстур вызывайте <code>.dispose()</code>.</li>
+            <li>Если сцена статична, рисуйте кадр только при изменениях, а не 60 раз в секунду.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- LINKS ---------------------------------------------------------- -->
+      <section id="links" class="section">
+        <div class="prose">
+          <p class="eyebrow">Ресурсы</p>
+          <h2>Что почитать дальше</h2>
+          <ul class="links">
+            <li><a href="https://threejs.org/docs/" target="_blank" rel="noopener">Документация</a><span>официальный справочник по всем классам</span></li>
+            <li><a href="https://threejs.org/manual/" target="_blank" rel="noopener">Руководство (Manual)</a><span>пошаговые статьи от основ до продвинутых тем</span></li>
+            <li><a href="https://threejs.org/examples/" target="_blank" rel="noopener">Примеры</a><span>сотни демо с исходным кодом</span></li>
+            <li><a href="https://discourse.threejs.org/" target="_blank" rel="noopener">Форум</a><span>вопросы и ответы сообщества</span></li>
+            <li><a href="https://discoverthreejs.com/" target="_blank" rel="noopener">Discover three.js</a><span>бесплатная онлайн-книга</span></li>
+            <li><a href="https://threejs-journey.com/" target="_blank" rel="noopener">Three.js Journey</a><span>подробный платный видеокурс Бруно Симона</span></li>
+            <li><a href="https://r3f.docs.pmnd.rs/" target="_blank" rel="noopener">React Three Fiber</a><span>Three.js для React</span></li>
+            <li><a href="https://github.com/mrdoob/three.js" target="_blank" rel="noopener">GitHub mrdoob/three.js</a><span>исходный код библиотеки</span></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>Путеводитель по Three.js r170. Все сцены на странице работают на Three.js.</span>
+        <a href="https://github.com/DipodDP/Test" target="_blank" rel="noopener">Исходный код страницы</a>
+      </div>
+    </footer>
+
     <script type="module" src="src/main.js"></script>
   </body>
 </html>

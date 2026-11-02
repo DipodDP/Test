@@ -1,9 +1,8 @@
 export default {
   id: 'lights',
-  title: 'Lights & Shadows',
+  title: 'Свет и тени',
   description:
-    'Ambient, hemisphere, directional, point and spot lights with real-time soft shadow maps, ' +
-    'light helpers and exponential fog. Toggle each light and tweak its colour in the panel.',
+    'Пять типов света: AmbientLight, HemisphereLight, DirectionalLight, PointLight (красная лампочка) и SpotLight (прожектор). Мягкие тени в реальном времени и экспоненциальный туман. Включите helpers, чтобы увидеть положение и направление источников.',
   camera: [8, 7, 12],
 
   setup({ THREE, gui }) {

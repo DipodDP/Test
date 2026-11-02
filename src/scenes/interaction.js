@@ -1,9 +1,8 @@
 export default {
   id: 'interaction',
-  title: 'Raycasting',
+  title: 'Выбор мышью',
   description:
-    'A 20×20 InstancedMesh (400 cubes, one draw call). A Raycaster finds the cube under the pointer: ' +
-    'hover to highlight, click to launch a ripple wave across the grid.',
+    'Сетка 20×20 из 400 кубиков — это один InstancedMesh и один вызов отрисовки. Raycaster определяет кубик под курсором: наведите, чтобы подсветить, кликните, чтобы запустить волну.',
   camera: [0, 17, 21],
 
   setup({ THREE, renderer, camera, gui }) {

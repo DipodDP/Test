@@ -1,9 +1,8 @@
 export default {
   id: 'particles',
-  title: 'Particles',
+  title: 'Частицы',
   description:
-    'A procedurally generated galaxy of up to 200k points built from a raw BufferGeometry with ' +
-    'per-vertex positions and colours, rendered with additive blending. Change parameters to regenerate.',
+    'Галактика из десятков тысяч точек: координаты и цвета записаны в BufferGeometry вручную, а рисует их Points с аддитивным смешиванием. Измените параметры — галактика сгенерируется заново.',
   camera: [0, 6, 9],
 
   setup({ THREE, gui, controls }) {

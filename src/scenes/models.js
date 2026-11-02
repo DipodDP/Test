@@ -4,10 +4,9 @@ const MODEL_URL = 'https://threejs.org/examples/models/gltf/RobotExpressive/Robo
 
 export default {
   id: 'models',
-  title: 'GLTF & Animation',
+  title: 'glTF и анимация',
   description:
-    'Loads a skinned glTF model with GLTFLoader and plays its clips through an AnimationMixer with ' +
-    'smooth cross-fades. Pick a clip in the panel. (Model © Tomás Laulhé, CC0, from the three.js examples.)',
+    'GLTFLoader загружает модель робота со скелетной анимацией, AnimationMixer проигрывает её клипы с плавными переходами. Выберите движение в панели. Модель: Tomás Laulhé, лицензия CC0, из примеров three.js.',
   camera: [-5, 3, 8],
   target: [0, 1.5, 0],
 
@@ -49,7 +48,7 @@ export default {
       current = next;
     };
 
-    const loading = gui.add({ status: 'loading…' }, 'status').disable();
+    const loading = gui.add({ status: 'загрузка…' }, 'status').name('модель').disable();
 
     new GLTFLoader().load(
       MODEL_URL,
@@ -70,7 +69,7 @@ export default {
       undefined,
       () => {
         if (disposed) return;
-        loading.setValue('offline – keyframe fallback');
+        loading.setValue('нет сети — запасной вариант');
         // No network? Show a hand-built keyframe animation instead.
         const box = new THREE.Mesh(
           new THREE.BoxGeometry(1, 1, 1),

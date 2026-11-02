@@ -2,10 +2,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 export default {
   id: 'materials',
-  title: 'Geometries & Materials',
+  title: 'Материалы',
   description:
-    'Built-in geometries paired with the core material types: Basic, Lambert, Phong, Toon, Normal, ' +
-    'Standard (PBR) and Physical (iridescence, clearcoat), lit by a PMREM environment map. The cube uses a canvas texture.',
+    'Восемь стандартных геометрий, у каждой свой тип материала: Basic (без освещения, с текстурой, нарисованной на canvas), Lambert, Phong, Toon, Normal, Standard (PBR-металл) и Physical (переливы и лаковое покрытие). Освещение даёт карта окружения, подготовленная PMREMGenerator. Подписи — спрайты.',
   camera: [0, 3, 12],
 
   setup({ THREE, renderer, gui }) {
