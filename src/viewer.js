@@ -60,7 +60,7 @@ export function createViewer({ demos, tabs, stage, guiHost, desc, hint }) {
     b.id = `lab-tab-${demo.id}`;
     b.textContent = demo.title;
     b.addEventListener('click', () => {
-      history.replaceState(null, '', `#lab-${demo.id}`);
+      try { history.replaceState(null, '', `#lab-${demo.id}`); } catch { /* sandboxed frames may refuse */ }
       load(i);
     });
     tabs.appendChild(b);

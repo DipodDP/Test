@@ -27,15 +27,27 @@ try {
     hint: $('lab-hint'),
   });
 
-  // #lab-<demo id> selects a demo (feature cards link here) and the browser scrolls to it.
+  // #lab-<demo id> selects a demo. Feature cards link here; handle their clicks directly,
+  // because no hashchange fires when the address already ends in the same hash.
+  const openDemo = (id) => {
+    const i = lab.indexOf(id);
+    if (i < 0) return -1;
+    lab.load(i);
+    $('lab').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    return i;
+  };
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#lab-"]');
+    if (!link || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const id = link.getAttribute('href').slice('#lab-'.length);
+    if (lab.indexOf(id) < 0) return;
+    e.preventDefault();
+    try { history.replaceState(null, '', `#lab-${id}`); } catch { /* sandboxed frames may refuse */ }
+    openDemo(id);
+  });
   const fromHash = () => {
     const m = location.hash.match(/^#lab-([\w-]+)$/);
-    const i = m ? lab.indexOf(m[1]) : -1;
-    if (i >= 0) {
-      lab.load(i);
-      $('lab').scrollIntoView();
-    }
-    return i;
+    return m ? openDemo(m[1]) : -1;
   };
   window.addEventListener('hashchange', fromHash);
   if (fromHash() < 0) lab.load(0);
